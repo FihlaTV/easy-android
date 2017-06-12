@@ -7,11 +7,11 @@ sudo: true
 
 env:
   global:
-    - ANDROID_TARGET=android-22
+    - ANDROID_TARGET=android-25
 
 android:
   components:
-    - build-tools-24.0.3
+    - build-tools-25.0.2
     - android-22
     - extra-google-google_play_services
     - extra-google-m2repository
