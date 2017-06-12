@@ -48,6 +48,6 @@ import android.view.View
 }
 
 /** Convenient method that shows or hides a Snackbar */
-fun Snackbar.showOrHide(show: Boolean) {
+fun Snackbar.showOrDismiss(show: Boolean) {
     if (show) show() else dismiss()
 }

@@ -9,4 +9,4 @@ fun delay(delay: Long, f: () -> Unit) {
     Handler().postDelayed(f, delay)
 }
 
-fun String.toUri() = Uri.parse(this)
+fun String.toUri(): Uri = Uri.parse(this)
