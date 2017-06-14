@@ -1,3 +1,5 @@
+@file:JvmName("ContextsUtils")
+
 package it.facile.easyandroid
 
 import android.content.Context

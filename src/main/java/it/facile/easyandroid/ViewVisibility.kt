@@ -1,3 +1,5 @@
+@file:JvmName("ViewVisibilityUtils")
+
 package it.facile.easyandroid
 
 import android.animation.Animator

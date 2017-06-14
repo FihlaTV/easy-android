@@ -1,3 +1,5 @@
+@file:JvmName("FragmentsUtils")
+
 package it.facile.easyandroid
 
 import android.support.v4.app.Fragment

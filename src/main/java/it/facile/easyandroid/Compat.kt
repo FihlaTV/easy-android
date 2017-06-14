@@ -1,3 +1,5 @@
+@file:JvmName("CompatUtils")
+
 package it.facile.easyandroid
 
 import android.os.Build
