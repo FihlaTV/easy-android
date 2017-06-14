@@ -36,3 +36,32 @@ fun Activity.closeKeyboard() {
         startActivity(browserIntent)
     }
 }
+
+/**
+ * Extension function that generates a Lazy property that query the Activity Intent with a given key
+ * and returns the corresponding object.
+ *
+ * @param key The key of the object
+ *
+ * @return the object of type T, null if no object is not found
+ */
+fun <T> Activity.intentExtras(key: String): Lazy<T?> = lazy(LazyThreadSafetyMode.NONE) {
+    @Suppress("UNCHECKED_CAST")
+    intent.extras.get(key) as T
+}
+
+/**
+ * Extension function that generates a Lazy property that query the Activity Intent with a given key
+ * and returns the corresponding object.
+ *
+ * @param key The key of the object
+ *
+ * @return the object of type T
+ * @throws MissingRequiredIntentExtraException if the key is missing
+ */
+fun <T> Activity.intentExtrasRequired(key: String): Lazy<T> = lazy(LazyThreadSafetyMode.NONE) {
+    @Suppress("UNCHECKED_CAST")
+    (intent.extras.get(key) ?: throw MissingRequiredIntentExtraException(key)) as T
+}
+
+class MissingRequiredIntentExtraException(key: String) : Exception("The Intent extra with key $key is missing")
