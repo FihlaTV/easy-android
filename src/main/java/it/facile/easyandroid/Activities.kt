@@ -46,7 +46,7 @@ fun Activity.closeKeyboard() {
 }
 
 /**
- * Extension function that generates a Lazy property that query the Activity Intent with a given key
+ * Extension function that generates a Lazy property that queries the Activity Intent with a given key
  * and returns the corresponding object.
  *
  * @param key The key of the object
@@ -59,7 +59,7 @@ fun <T> Activity.intentExtras(key: String): Lazy<T?> = lazy(LazyThreadSafetyMode
 }
 
 /**
- * Extension function that generates a Lazy property that query the Activity Intent with a given key
+ * Extension function that generates a Lazy property that queries the Activity Intent with a given key
  * and returns the corresponding object.
  *
  * @param key The key of the object
@@ -71,5 +71,28 @@ fun <T> Activity.intentExtrasRequired(key: String): Lazy<T> = lazy(LazyThreadSaf
     @Suppress("UNCHECKED_CAST")
     (intent.extras.get(key) ?: throw MissingRequiredIntentExtraException(key)) as T
 }
+
+/**
+ * Extension function that queries the Activity Intent with a given key and returns the corresponding object.
+ *
+ * @param key The key of the object
+ *
+ * @return the object of type T, null if no object is not found
+ */
+@Suppress("UNCHECKED_CAST")
+fun <T> Activity.getIntentExtra(key: String): T? =
+        intent.extras.get(key) as T?
+
+/**
+ * Extension function that queries the Activity Intent with a given key and returns the corresponding object.
+ *
+ * @param key The key of the object
+ *
+ * @return the object of type T
+ * @throws MissingRequiredIntentExtraException if the key is missing
+ */
+@Suppress("UNCHECKED_CAST")
+fun <T> Activity.getIntentExtraRequired(key: String): T =
+        (intent.extras.get(key) ?: throw MissingRequiredIntentExtraException(key)) as T
 
 class MissingRequiredIntentExtraException(key: String) : Exception("The Intent extra with key $key is missing")
