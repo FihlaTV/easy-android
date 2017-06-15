@@ -3,6 +3,7 @@
 package it.facile.easyandroid
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -24,16 +25,23 @@ fun Activity.closeKeyboard() {
     }
 }
 
-@JvmOverloads fun Activity.openUrl(url: Uri, @ColorRes tabColor: Int? = null) {
+@JvmOverloads fun Activity.openUrl(url: Uri, @ColorRes tabColor: Int? = null): Boolean {
     if (isChromeCustomTabsSupported()) {
         CustomTabsIntent.Builder().apply {
             tabColor?.let { setToolbarColor(ContextCompat.getColor(this@openUrl, it)) }
         }.build().launchUrl(this, url)
+        return true
     } else {
-        val browserIntent = Intent(Intent.ACTION_VIEW, url).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+        try {
+            val browserIntent = Intent(Intent.ACTION_VIEW, url).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+            }
+            startActivity(browserIntent)
+            return true
+        } catch (e: ActivityNotFoundException) {
+            e.printStackTrace()
+            return false
         }
-        startActivity(browserIntent)
     }
 }
 
