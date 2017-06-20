@@ -10,3 +10,5 @@ fun delay(delay: Long, f: () -> Unit) {
 }
 
 fun String.toUri(): Uri = Uri.parse(this)
+
+fun <T> lazyMain(initializer: () -> T) = lazy(LazyThreadSafetyMode.NONE, initializer)
