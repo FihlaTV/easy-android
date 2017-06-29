@@ -55,7 +55,7 @@ fun Activity.closeKeyboard() {
  */
 fun <T> Activity.intentExtras(key: String): Lazy<T?> = lazy(LazyThreadSafetyMode.NONE) {
     @Suppress("UNCHECKED_CAST")
-    intent.extras.get(key) as T
+    getIntentExtra<T>(key)
 }
 
 /**
@@ -69,7 +69,7 @@ fun <T> Activity.intentExtras(key: String): Lazy<T?> = lazy(LazyThreadSafetyMode
  */
 fun <T> Activity.intentExtrasRequired(key: String): Lazy<T> = lazy(LazyThreadSafetyMode.NONE) {
     @Suppress("UNCHECKED_CAST")
-    (intent.extras.get(key) ?: throw MissingRequiredIntentExtraException(key)) as T
+    getIntentExtraRequired<T>(key)
 }
 
 /**
@@ -81,7 +81,7 @@ fun <T> Activity.intentExtrasRequired(key: String): Lazy<T> = lazy(LazyThreadSaf
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Activity.getIntentExtra(key: String): T? =
-        intent.extras.get(key) as T?
+        intent?.extras?.get(key) as T?
 
 /**
  * Extension function that queries the Activity Intent with a given key and returns the corresponding object.
