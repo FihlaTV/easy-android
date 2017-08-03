@@ -25,7 +25,7 @@ fun Activity.closeKeyboard() {
     }
 }
 
-@JvmOverloads fun Activity.openUrl(url: Uri, @ColorRes tabColor: Int? = null, headers: List<Pair<String, String>>): Boolean {
+@JvmOverloads fun Activity.openUrl(url: Uri, @ColorRes tabColor: Int? = null, headers: List<Pair<String, String>> = emptyList()): Boolean {
     if (isChromeCustomTabsSupported()) {
         CustomTabsIntent.Builder()
                 .apply { tabColor?.let { setToolbarColor(ContextCompat.getColor(this@openUrl, it)) } }
