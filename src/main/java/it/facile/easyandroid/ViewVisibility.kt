@@ -40,6 +40,11 @@ import android.view.View
     if (show) visible(animate) else gone(animate)
 }
 
+/** Convenient method that chooses between View.visible() or hide the view following the hiding strategy*/
+fun View.visibleOrHide(show: Boolean, hidingStrategy: Int, animate: Boolean = true) {
+    if (show) visible(animate) else if (hidingStrategy == View.GONE) gone(animate) else invisible(animate)
+}
+
 private fun View.hide(hidingStrategy: Int, animate: Boolean = true) {
     if (animate) {
         animate().alpha(0f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
