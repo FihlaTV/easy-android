@@ -7,8 +7,6 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
-import android.provider.Browser
 import android.support.annotation.ColorRes
 import android.support.customtabs.CustomTabsIntent
 import android.support.v4.content.ContextCompat
@@ -27,24 +25,18 @@ fun Activity.closeKeyboard() {
     }
 }
 
-@JvmOverloads fun Activity.openUrl(url: Uri, @ColorRes tabColor: Int? = null, headers: List<Pair<String, String>>? = null): Boolean {
+@JvmOverloads fun Activity.openUrl(url: Uri, @ColorRes tabColor: Int? = null, headers: List<Pair<String, String>>): Boolean {
     if (isChromeCustomTabsSupported()) {
-        val customTabIntent = CustomTabsIntent.Builder().apply {
-            tabColor?.let { setToolbarColor(ContextCompat.getColor(this@openUrl, it)) }
-        }.build()
-
-        headers?.let { addHeadersToUrlIntent(customTabIntent.intent, it) }
-
-        customTabIntent.launchUrl(this, url)
+        CustomTabsIntent.Builder().apply { tabColor?.let { setToolbarColor(ContextCompat.getColor(this@openUrl, it)) } }
+                .build().apply { intent.addHeadersToUrl(headers) }
+                .launchUrl(this, url)
         return true
     } else {
         try {
             val browserIntent = Intent(Intent.ACTION_VIEW, url).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                addHeadersToUrl(headers)
             }
-
-            headers?.let { addHeadersToUrlIntent(browserIntent, it) }
-
             startActivity(browserIntent)
             return true
         } catch (e: ActivityNotFoundException) {
@@ -105,15 +97,3 @@ fun <T> Activity.getIntentExtraRequired(key: String): T =
         (intent.extras.get(key) ?: throw MissingRequiredIntentExtraException(key)) as T
 
 class MissingRequiredIntentExtraException(key: String) : Exception("The Intent extra with key $key is missing")
-
-
-/** Private functions **/
-
-private fun addHeadersToUrlIntent(intent: Intent, headers: List<Pair<String, String>>) {
-    val bundle: Bundle = Bundle()
-    headers.forEach {
-        (headerKey, headerValue) ->
-        bundle.putString(headerKey, headerValue)
-        intent.putExtra(Browser.EXTRA_HEADERS, bundle)
-    }
-}
