@@ -37,7 +37,7 @@ fun Activity.closeKeyboard() {
         try {
             val browserIntent = Intent(Intent.ACTION_VIEW, url).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                addHeadersToUrl(headers)
+                putBrowserHeadersExtra(headers)
             }
             startActivity(browserIntent)
             return true
