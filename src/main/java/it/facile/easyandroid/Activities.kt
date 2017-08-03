@@ -27,8 +27,10 @@ fun Activity.closeKeyboard() {
 
 @JvmOverloads fun Activity.openUrl(url: Uri, @ColorRes tabColor: Int? = null, headers: List<Pair<String, String>>): Boolean {
     if (isChromeCustomTabsSupported()) {
-        CustomTabsIntent.Builder().apply { tabColor?.let { setToolbarColor(ContextCompat.getColor(this@openUrl, it)) } }
-                .build().apply { intent.addHeadersToUrl(headers) }
+        CustomTabsIntent.Builder()
+                .apply { tabColor?.let { setToolbarColor(ContextCompat.getColor(this@openUrl, it)) } }
+                .build()
+                .apply { intent.putBrowserHeadersExtra(headers) }
                 .launchUrl(this, url)
         return true
     } else {
