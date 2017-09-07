@@ -25,28 +25,27 @@ fun Activity.closeKeyboard() {
     }
 }
 
-@JvmOverloads fun Activity.openUrl(url: Uri, @ColorRes tabColor: Int? = null, headers: List<Pair<String, String>> = emptyList()): Boolean {
-    if (isChromeCustomTabsSupported()) {
-        CustomTabsIntent.Builder()
-                .apply { tabColor?.let { setToolbarColor(ContextCompat.getColor(this@openUrl, it)) } }
-                .build()
-                .apply { intent.putBrowserHeadersExtra(headers) }
-                .launchUrl(this, url)
-        return true
-    } else {
+@JvmOverloads fun Activity.openUrl(url: Uri, @ColorRes tabColor: Int? = null, headers: List<Pair<String, String>> = emptyList()) =
         try {
-            val browserIntent = Intent(Intent.ACTION_VIEW, url).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                putBrowserHeadersExtra(headers)
+            if (isChromeCustomTabsSupported()) {
+                CustomTabsIntent.Builder()
+                        .apply { tabColor?.let { setToolbarColor(ContextCompat.getColor(this@openUrl, it)) } }
+                        .build()
+                        .apply { intent.putBrowserHeadersExtra(headers) }
+                        .launchUrl(this, url)
+                true
+            } else {
+                val browserIntent = Intent(Intent.ACTION_VIEW, url).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                    putBrowserHeadersExtra(headers)
+                }
+                startActivity(browserIntent)
+                true
             }
-            startActivity(browserIntent)
-            return true
         } catch (e: ActivityNotFoundException) {
             e.printStackTrace()
-            return false
+            false
         }
-    }
-}
 
 /**
  * Extension function that generates a Lazy property that queries the Activity Intent with a given key
