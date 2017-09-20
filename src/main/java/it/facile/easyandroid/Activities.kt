@@ -25,19 +25,17 @@ fun Activity.closeKeyboard() {
     }
 }
 
-@JvmOverloads fun Activity.openUrl(url: Uri, @ColorRes tabColor: Int? = null, headers: List<Pair<String, String>> = emptyList()) =
+@JvmOverloads fun Activity.openUrl(url: Uri, @ColorRes tabColor: Int? = null) =
         try {
             if (isChromeCustomTabsSupported()) {
                 CustomTabsIntent.Builder()
                         .apply { tabColor?.let { setToolbarColor(ContextCompat.getColor(this@openUrl, it)) } }
                         .build()
-                        .apply { intent.putBrowserHeadersExtra(headers) }
                         .launchUrl(this, url)
                 true
             } else {
                 val browserIntent = Intent(Intent.ACTION_VIEW, url).apply {
                     addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                    putBrowserHeadersExtra(headers)
                 }
                 startActivity(browserIntent)
                 true
